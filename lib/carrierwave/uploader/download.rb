@@ -20,6 +20,9 @@ module CarrierWave
           if file.meta.include? 'content-disposition'
             match = file.meta['content-disposition'].match(/filename=(\"?)(.+)\1/)
             return match[2] unless match.nil?
+          elsif file.meta.include? 'content-type'
+            match = file.meta['content-type'].split('/')
+            return match[1] if %w(jpg jpeg gif png).include?(match[1])
           end
           File.basename(file.base_uri.path)
         end
